@@ -11,8 +11,8 @@ import android.util.Log
 import android.view.*
 import com.vincent.entities.Pokemon
 import com.vincent.pokeapi.R
-import com.vincent.pokeapi.model.PokemonViewModel
-import com.vincent.pokeapi.model.PokemonViewModelFactory
+import com.vincent.pokeapi.model.PokemonListViewModel
+import com.vincent.pokeapi.model.PokemonListViewModelFactory
 import com.vincent.pokeapi.services.PokeApiService
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemons.*
@@ -23,13 +23,13 @@ import javax.inject.Inject
 class PokemonListFragment : Fragment(), IPokemonsView {
     private val TAG = javaClass.simpleName
 
-    private lateinit var pokemonsViewModel: PokemonViewModel
+    private lateinit var pokemonListViewModel: PokemonListViewModel
 
     @Inject
     lateinit var pokeApiService: PokeApiService
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        pokemonsViewModel = ViewModelProviders.of(activity!!, PokemonViewModelFactory(pokeApiService)).get(PokemonViewModel::class.java)
+        pokemonListViewModel = ViewModelProviders.of(activity!!, PokemonListViewModelFactory(pokeApiService)).get(PokemonListViewModel::class.java)
 
         setHasOptionsMenu(true)
 
@@ -42,14 +42,14 @@ class PokemonListFragment : Fragment(), IPokemonsView {
         pokemonListRecyclerView.layoutManager = LinearLayoutManager(activity)
         pokemonListRecyclerView.adapter = PokemonListAdapter(this)
 
-        updateUI(pokemonsViewModel.pokemons.value)
-        pokemonsViewModel.pokemons.observe(this, Observer {
+        updateUI(pokemonListViewModel.pokemons.value)
+        pokemonListViewModel.pokemons.observe(this, Observer {
             updateUI(it)
         })
 
-        val pokemonList = pokemonsViewModel.pokemons.value
+        val pokemonList = pokemonListViewModel.pokemons.value
         if (pokemonList == null || pokemonList.isEmpty()) {
-            launch { pokemonsViewModel.getPokemons() }
+            launch { pokemonListViewModel.getPokemons() }
         }
     }
 
@@ -93,9 +93,9 @@ class PokemonListFragment : Fragment(), IPokemonsView {
                 existingPokemonList.clear()
 
                 val listToAdd: List<Pokemon>? = if (newText.isEmpty()) {
-                    pokemonsViewModel.pokemons.value
+                    pokemonListViewModel.pokemons.value
                 } else {
-                    pokemonsViewModel.pokemons.value?.filter {
+                    pokemonListViewModel.pokemons.value?.filter {
                         it.name.contains(newText, true)
                     }
                 }

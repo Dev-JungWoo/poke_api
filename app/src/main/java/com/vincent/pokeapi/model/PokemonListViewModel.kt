@@ -7,7 +7,7 @@ import com.vincent.usecases.GetPokemons
 import com.vincent.usecases.service.IPokeService
 import kotlinx.coroutines.experimental.async
 
-class PokemonViewModel(private val pokeService: IPokeService) : ViewModel() {
+class PokemonListViewModel(private val pokeService: IPokeService) : ViewModel() {
     val pokemons: MutableLiveData<List<Pokemon>> = MutableLiveData()
 
     suspend fun getPokemons() {

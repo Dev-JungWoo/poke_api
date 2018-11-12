@@ -5,8 +5,8 @@ import android.arch.lifecycle.ViewModelProvider
 import com.vincent.usecases.service.IPokeService
 
 @Suppress("UNCHECKED_CAST")
-class PokemonViewModelFactory(private val service: IPokeService) : ViewModelProvider.NewInstanceFactory() {
+class PokemonDetailsViewModelFactory(private val service: IPokeService) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return PokemonViewModel(service) as T
+        return PokemonDetailsViewModel(service) as T
     }
 }
