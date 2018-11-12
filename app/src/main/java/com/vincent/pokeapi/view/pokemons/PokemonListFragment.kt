@@ -16,6 +16,7 @@ import com.vincent.pokeapi.model.PokemonViewModelFactory
 import com.vincent.pokeapi.services.PokeApiService
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemons.*
+import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 
 
@@ -45,6 +46,8 @@ class PokemonListFragment : Fragment(), IPokemonsView {
         pokemonsViewModel.pokemons.observe(this, Observer {
             updateUI(it)
         })
+
+        launch { pokemonsViewModel.getPokemons() }
     }
 
     override fun onAttach(context: Context?) {
@@ -52,17 +55,17 @@ class PokemonListFragment : Fragment(), IPokemonsView {
         super.onAttach(context)
     }
 
-    private fun updateUI(movieList: List<Pokemon>?) {
-        Log.d(TAG, "updateUI, pokemonList = $movieList")
+    private fun updateUI(pokemonList: List<Pokemon>?) {
+        Log.d(TAG, "updateUI, pokemonList = $pokemonList")
 
-        val existingMovieList = (pokemonListRecyclerView.adapter as PokemonListAdapter).pokemonList
+        val existingPokemonList = (pokemonListRecyclerView.adapter as PokemonListAdapter).pokemonList
 
-        movieList?.let {
-            existingMovieList.addAll(it)
+        pokemonList?.let {
+            existingPokemonList.addAll(it)
             pokemonListRecyclerView.adapter?.notifyDataSetChanged()
         }
 
-        noPokemonTextView.visibility = if (existingMovieList.isEmpty()) {
+        noPokemonTextView.visibility = if (existingPokemonList.isEmpty()) {
             View.VISIBLE
         } else {
             View.GONE

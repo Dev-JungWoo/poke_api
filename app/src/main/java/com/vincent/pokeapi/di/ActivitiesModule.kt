@@ -14,5 +14,5 @@ abstract class ActivitiesModule {
     abstract fun bindMainActivity(): MainActivity
 
     @ContributesAndroidInjector(modules = [PokemonsFragmentModule::class])
-    abstract fun bindMoviesFragment(): PokemonListFragment
+    abstract fun bindPokemonFragment(): PokemonListFragment
 }

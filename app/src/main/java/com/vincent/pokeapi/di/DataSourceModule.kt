@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 @Module
 class DataSourceModule {
     @Provides
-    fun providesRemoteMovieDataSource(retrofit: Retrofit): PokeDataSource {
+    fun providesRemotePokeDataSource(retrofit: Retrofit): PokeDataSource {
         return RemotePokeDataSource(retrofit.create(RetrofitPokeService::class.java))
     }
 }

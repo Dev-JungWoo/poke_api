@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface RetrofitPokeService {
-    @GET("/")
+    @GET("/api/v2/pokemon")
     fun getPokemons(): Call<PokemonListResultModel>?
 
     @GET("/{id}")
@@ -15,6 +15,6 @@ interface RetrofitPokeService {
     ): Call<PokemonListResultModel>?
 
     companion object {
-        val BASE_URL = "https://pokeapi.co/api/v2/pokemon/"
+        val BASE_URL = "https://pokeapi.co"
     }
 }
