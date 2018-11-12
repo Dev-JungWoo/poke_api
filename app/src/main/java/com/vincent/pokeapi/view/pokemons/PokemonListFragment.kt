@@ -47,7 +47,10 @@ class PokemonListFragment : Fragment(), IPokemonsView {
             updateUI(it)
         })
 
-        launch { pokemonsViewModel.getPokemons() }
+        val pokemonList = pokemonsViewModel.pokemons.value
+        if (pokemonList == null || pokemonList.isEmpty()) {
+            launch { pokemonsViewModel.getPokemons() }
+        }
     }
 
     override fun onAttach(context: Context?) {
@@ -86,7 +89,22 @@ class PokemonListFragment : Fragment(), IPokemonsView {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                //TODO: filter list
+                val existingPokemonList = (pokemonListRecyclerView.adapter as PokemonListAdapter).pokemonList
+                existingPokemonList.clear()
+
+                val listToAdd: List<Pokemon>? = if (newText.isEmpty()) {
+                    pokemonsViewModel.pokemons.value
+                } else {
+                    pokemonsViewModel.pokemons.value?.filter {
+                        it.name.contains(newText, true)
+                    }
+                }
+
+                listToAdd?.let {
+                    existingPokemonList.addAll(it)
+                    (pokemonListRecyclerView.adapter as PokemonListAdapter).notifyDataSetChanged()
+                }
+
                 return false
             }
         })
