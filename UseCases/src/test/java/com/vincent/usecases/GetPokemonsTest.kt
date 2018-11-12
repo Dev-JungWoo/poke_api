@@ -15,7 +15,7 @@ class GetPokemonsTest : BaseUnitTest() {
     lateinit var service: IPokeService
 
     @Test
-    fun searchMovies_shouldReturnCorrectResult() {
+    fun getPokemons_shouldReturnCorrectResult() {
         given(service.getPokemons()).will { SUCCESS_SEARCH_RESULT }
 
         val result = GetPokemons(service).execute()
@@ -25,7 +25,7 @@ class GetPokemonsTest : BaseUnitTest() {
     }
 
     @Test
-    fun searchMovies_shouldReturnNull() {
+    fun getPokemons_shouldReturnNull() {
         given(service.getPokemons()).will { null }
 
         val result = GetPokemons(service).execute()
