@@ -1,5 +1,6 @@
 package com.vincent.usecases
 
+import com.vincent.entities.Pokemon
 import com.vincent.usecases.service.IPokeService
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,14 +15,20 @@ class GetPokemonsTest : BaseUnitTest() {
     @Mock
     lateinit var service: IPokeService
 
+    val MOCK_POKEMONS = listOf(
+        Pokemon("poke1", "url1"),
+        Pokemon("poke2", "url2"),
+        Pokemon("poke3", "url3")
+    )
+
     @Test
     fun getPokemons_shouldReturnCorrectResult() {
-        given(service.getPokemons()).will { SUCCESS_SEARCH_RESULT }
+        given(service.getPokemons()).will { MOCK_POKEMONS }
 
         val result = GetPokemons(service).execute()
 
         Mockito.verify(service, times(1)).getPokemons()
-        assert(result == SUCCESS_SEARCH_RESULT)
+        assert(result == MOCK_POKEMONS)
     }
 
     @Test
