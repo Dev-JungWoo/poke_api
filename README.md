@@ -12,8 +12,8 @@ This is a pokemon api app which shows how to make an app based on Clean Architec
 - Dependency Injection(Dagger2).
 
 # Demonstrates
-- How to implement asynchronous task with Corutines which replaced the Rx library and AsyncTask.
+- How to implement asynchronous task with Coroutines which replaced the Rx library and AsyncTask.
 - Each module can be tested independently.
-- How to unit test the coroutine and suspend function.
+- How to unit test the coroutines and suspend function.
 - How to unit test ViewModel, LiveData.
 
