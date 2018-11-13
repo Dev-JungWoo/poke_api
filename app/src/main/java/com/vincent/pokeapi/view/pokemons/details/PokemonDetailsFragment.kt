@@ -38,7 +38,7 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
     lateinit var pokeApiService: PokeApiService
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        pokemonDetailsViewModel = ViewModelProviders.of(activity!!, PokemonDetailsViewModelFactory(pokeApiService)).get(PokemonDetailsViewModel::class.java)
+        pokemonDetailsViewModel = ViewModelProviders.of(this, PokemonDetailsViewModelFactory(pokeApiService)).get(PokemonDetailsViewModel::class.java)
         pokemonDetailsViewModel.pokemon = pokemon
 
         return inflater.inflate(R.layout.fragment_pokemon_details, container, false)!!
