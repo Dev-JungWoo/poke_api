@@ -4,7 +4,7 @@ This is a pokemon api app which shows how to make an app based on Clean Architec
 
 # Used technology and frameworks
 - Kotlin.
-- Corutines(async, await, runBlocking)
+- Coroutines(async, await, runBlocking)
 - Clean Architecture.
 - MVVM(Android ViewModel, LiveData).
 - Retrofit2.
