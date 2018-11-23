@@ -1,6 +1,5 @@
 package com.vincent.pokeapi.view.pokemons
 
-import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -9,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.vincent.entities.Pokemon
 import com.vincent.pokeapi.R
-import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsFragment
+import com.vincent.pokeapi.view.pokemons.details.IPokemonListSelectListener
 
-class PokemonListAdapter(var pokemonListFragment: PokemonListFragment) : RecyclerView.Adapter<PokemonListAdapter.ViewHolder>() {
-    val TAG = javaClass.simpleName
+class PokemonListAdapter(private val selectListener: IPokemonListSelectListener) : RecyclerView.Adapter<PokemonListAdapter.ViewHolder>() {
+    private val TAG = javaClass.simpleName
 
     var pokemonList: MutableList<Pokemon> = mutableListOf()
 
@@ -33,16 +32,7 @@ class PokemonListAdapter(var pokemonListFragment: PokemonListFragment) : Recycle
         nameTextView.text = pokemon.name
 
         cardView.setOnClickListener {
-            val transaction = pokemonListFragment.activity?.supportFragmentManager?.beginTransaction()
-
-            transaction?.let {transaction ->
-                val pokemonListFragment = PokemonDetailsFragment()
-                pokemonListFragment.pokemon = pokemon
-                transaction.replace(R.id.main_container, pokemonListFragment)
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                transaction.addToBackStack(null)
-                transaction.commit()
-            }
+            selectListener.onSelect(pokemon)
         }
     }
 

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
@@ -14,13 +15,15 @@ import com.vincent.pokeapi.R
 import com.vincent.pokeapi.model.PokemonListViewModel
 import com.vincent.pokeapi.model.PokemonListViewModelFactory
 import com.vincent.pokeapi.services.PokeApiService
+import com.vincent.pokeapi.view.pokemons.details.IPokemonListSelectListener
+import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsFragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemons.*
 import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 
 
-class PokemonListFragment : Fragment(), IPokemonsView {
+class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListener {
     private val TAG = javaClass.simpleName
 
     private lateinit var pokemonListViewModel: PokemonListViewModel
@@ -56,6 +59,17 @@ class PokemonListFragment : Fragment(), IPokemonsView {
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
+    }
+
+    override fun onSelect(pokemon: Pokemon) {
+        activity?.supportFragmentManager?.beginTransaction()?.let { transaction ->
+            val pokemonListFragment = PokemonDetailsFragment()
+            pokemonListFragment.pokemon = pokemon
+            transaction.replace(R.id.main_container, pokemonListFragment)
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
     private fun updateUI(pokemonList: List<Pokemon>?) {
