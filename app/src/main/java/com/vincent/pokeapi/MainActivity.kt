@@ -25,11 +25,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val transaction = supportFragmentManager.beginTransaction()
-        val pokemonListFragment = PokemonListFragment()
-        transaction.add(R.id.main_container, pokemonListFragment)
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        transaction.commit()
+
+        if (savedInstanceState == null) {
+            val transaction = supportFragmentManager.beginTransaction()
+            val pokemonListFragment = PokemonListFragment()
+            transaction.add(R.id.main_container, pokemonListFragment)
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            transaction.commit()
+        }
 
         setSupportActionBar(toolbar)
     }

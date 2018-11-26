@@ -32,14 +32,11 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
 
     private lateinit var pokemonDetailsViewModel: PokemonDetailsViewModel
 
-    lateinit var pokemon: Pokemon
-
     @Inject
     lateinit var pokeApiService: PokeApiService
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        pokemonDetailsViewModel = ViewModelProviders.of(this, PokemonDetailsViewModelFactory(pokeApiService)).get(PokemonDetailsViewModel::class.java)
-        pokemonDetailsViewModel.pokemon = pokemon
+        pokemonDetailsViewModel = ViewModelProviders.of(activity!!, PokemonDetailsViewModelFactory(pokeApiService)).get(PokemonDetailsViewModel::class.java)
 
         return inflater.inflate(R.layout.fragment_pokemon_details, container, false)!!
     }
@@ -49,7 +46,7 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
 
         updateUI(pokemonDetailsViewModel.pokemon)
 
-        val observer = pokemonDetailsViewModel.pokemonDetails.observe(this, Observer {
+        pokemonDetailsViewModel.pokemonDetails.observe(this, Observer {
             updateUI(it)
         })
 

@@ -12,6 +12,8 @@ import android.util.Log
 import android.view.*
 import com.vincent.entities.Pokemon
 import com.vincent.pokeapi.R
+import com.vincent.pokeapi.model.PokemonDetailsViewModel
+import com.vincent.pokeapi.model.PokemonDetailsViewModelFactory
 import com.vincent.pokeapi.model.PokemonListViewModel
 import com.vincent.pokeapi.model.PokemonListViewModelFactory
 import com.vincent.pokeapi.services.PokeApiService
@@ -32,7 +34,10 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
     lateinit var pokeApiService: PokeApiService
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        pokemonListViewModel = ViewModelProviders.of(activity!!, PokemonListViewModelFactory(pokeApiService)).get(PokemonListViewModel::class.java)
+        pokemonListViewModel = ViewModelProviders.of(
+            activity!!,
+            PokemonListViewModelFactory(pokeApiService)).get(PokemonListViewModel::class.java
+        )
 
         setHasOptionsMenu(true)
 
@@ -63,9 +68,13 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
 
     override fun onSelect(pokemon: Pokemon) {
         activity?.supportFragmentManager?.beginTransaction()?.let { transaction ->
-            val pokemonListFragment = PokemonDetailsFragment()
-            pokemonListFragment.pokemon = pokemon
-            transaction.replace(R.id.main_container, pokemonListFragment)
+            val pokemonDetailsFragment = PokemonDetailsFragment()
+
+            activity?.run {
+                ViewModelProviders.of(activity!!, PokemonDetailsViewModelFactory(pokeApiService)).get(PokemonDetailsViewModel::class.java).pokemon = pokemon
+            } ?: throw Exception("Invalid Activity")
+
+            transaction.replace(R.id.main_container, pokemonDetailsFragment)
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             transaction.addToBackStack(null)
             transaction.commit()
