@@ -21,7 +21,8 @@ import com.vincent.pokeapi.view.pokemons.details.IPokemonListSelectListener
 import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsFragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemons.*
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -57,7 +58,7 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
 
         val pokemonList = pokemonListViewModel.pokemons.value
         if (pokemonList == null || pokemonList.isEmpty()) {
-            launch { pokemonListViewModel.getPokemons() }
+            GlobalScope.launch { pokemonListViewModel.getPokemons() }
         }
     }
 

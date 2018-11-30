@@ -19,15 +19,16 @@ import com.vincent.pokeapi.model.PokemonDetailsViewModelFactory
 import com.vincent.pokeapi.services.PokeApiService
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemon_details.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
 import java.io.InputStream
 import java.net.URL
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 
-class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
+class PokemonDetailsFragment : Fragment(), IPokemonDetailsView, CoroutineScope {
+    override val coroutineContext: CoroutineContext = Dispatchers.Main + SupervisorJob()
+
     private val TAG = javaClass.simpleName
 
     private lateinit var pokemonDetailsViewModel: PokemonDetailsViewModel
@@ -52,7 +53,7 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
 
         pokemonImageView.visibility = View.INVISIBLE
 
-        launch { pokemonDetailsViewModel.getPokemonDetails(pokemonDetailsViewModel.pokemon.name) }
+        GlobalScope.launch { pokemonDetailsViewModel.getPokemonDetails(pokemonDetailsViewModel.pokemon.name) }
     }
 
     private fun updateUI(pokemon: Pokemon?) {
@@ -69,8 +70,9 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
         details?.let {
             weightTextView.text = details.weight.toString()
             heightTextView.text = details.height.toString()
-            launch(UI) {
-                val imageLoadJob = async { loadImage(details.imageUrl) }
+
+            this.launch() {
+                val imageLoadJob = GlobalScope.async { loadImage(details.imageUrl) }
                 imageLoadJob.await()?.let {
                     pokemonImageView.setImageBitmap(it)
                     pokemonImageView.visibility = View.VISIBLE

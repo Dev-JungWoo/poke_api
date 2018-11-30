@@ -6,14 +6,15 @@ import com.vincent.entities.Pokemon
 import com.vincent.entities.PokemonDetails
 import com.vincent.usecases.GetPokemonDetails
 import com.vincent.usecases.service.IPokeService
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 class PokemonDetailsViewModel(private val pokeService: IPokeService) : ViewModel() {
     lateinit var pokemon: Pokemon
     val pokemonDetails = MutableLiveData<PokemonDetails?>()
 
     suspend fun getPokemonDetails(name: String) {
-        val searchWork = async { GetPokemonDetails(pokeService, name).execute() }
+        val searchWork = GlobalScope.async { GetPokemonDetails(pokeService, name).execute() }
         val result = searchWork.await()
 
         result?.let {
