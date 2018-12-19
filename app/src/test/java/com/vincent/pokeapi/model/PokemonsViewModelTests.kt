@@ -5,7 +5,6 @@ import com.vincent.entities.Pokemon
 import com.vincent.pokeapi.BaseUnitTest
 import com.vincent.pokeapi.data.PokeDataSource
 import com.vincent.pokeapi.services.PokeApiService
-import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -31,7 +30,7 @@ class PokemonsViewModelTests : BaseUnitTest() {
     )
 
     @Test
-    fun viewModel_shouldReturnEmptyList() = runBlocking<Unit> {
+    fun viewModel_shouldReturnEmptyList() {
         val emptyPokemonList: List<Pokemon> = listOf()
         var resultList: List<Pokemon>? = null
         val pokeApiService = PokeApiService(pokeDataSource)
@@ -47,7 +46,7 @@ class PokemonsViewModelTests : BaseUnitTest() {
     }
 
     @Test
-    fun viewModel_shouldReturnNonEmptyPokemonList() = runBlocking<Unit> {
+    fun viewModel_shouldReturnNonEmptyPokemonList() = {
         var resultList: List<Pokemon>? = null
         val pokeApiService = PokeApiService(pokeDataSource)
 

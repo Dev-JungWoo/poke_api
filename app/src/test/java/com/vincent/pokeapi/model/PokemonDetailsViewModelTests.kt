@@ -5,7 +5,6 @@ import com.vincent.entities.PokemonDetails
 import com.vincent.pokeapi.BaseUnitTest
 import com.vincent.pokeapi.data.PokeDataSource
 import com.vincent.pokeapi.services.PokeApiService
-import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -25,7 +24,7 @@ class PokemonDetailsViewModelTests : BaseUnitTest() {
     lateinit var pokeDataSource: PokeDataSource
 
     @Test
-    fun viewModel_shouldReturnPokemonDetails() = runBlocking<Unit> {
+    fun viewModel_shouldReturnPokemonDetails() = {
         val pokeApiService = PokeApiService(pokeDataSource)
         var result: PokemonDetails? = null
 

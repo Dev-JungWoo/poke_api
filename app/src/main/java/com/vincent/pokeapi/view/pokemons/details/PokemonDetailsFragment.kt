@@ -53,7 +53,7 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView, CoroutineScope {
 
         pokemonImageView.visibility = View.INVISIBLE
 
-        GlobalScope.launch { pokemonDetailsViewModel.getPokemonDetails(pokemonDetailsViewModel.pokemon.name) }
+        pokemonDetailsViewModel.getPokemonDetails(pokemonDetailsViewModel.pokemon.name)
     }
 
     private fun updateUI(pokemon: Pokemon?) {

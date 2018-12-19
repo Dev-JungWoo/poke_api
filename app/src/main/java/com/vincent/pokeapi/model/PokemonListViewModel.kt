@@ -5,18 +5,17 @@ import android.arch.lifecycle.ViewModel
 import com.vincent.entities.Pokemon
 import com.vincent.usecases.GetPokemons
 import com.vincent.usecases.service.IPokeService
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 
-class PokemonListViewModel(private val pokeService: IPokeService) : ViewModel() {
+class PokemonListViewModel(private val pokeService: IPokeService) : ViewModel(), CoroutineScope {
     val pokemons: MutableLiveData<List<Pokemon>> = MutableLiveData()
 
-    suspend fun getPokemons() {
-        val searchWork = GlobalScope.async { GetPokemons(pokeService).execute() }
-        val result = searchWork.await()
+    private val job = Job()
+    override val coroutineContext = Dispatchers.Default + job
 
-        result?.let {
-            pokemons.postValue(result)
+    fun getPokemons() {
+        launch {
+            GetPokemons(pokeService).execute()?.let { pokemons.postValue(it) }
         }
     }
 }

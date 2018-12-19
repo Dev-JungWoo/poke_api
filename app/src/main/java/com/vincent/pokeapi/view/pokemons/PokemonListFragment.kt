@@ -58,7 +58,7 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
 
         val pokemonList = pokemonListViewModel.pokemons.value
         if (pokemonList == null || pokemonList.isEmpty()) {
-            GlobalScope.launch { pokemonListViewModel.getPokemons() }
+            pokemonListViewModel.getPokemons()
         }
     }
 
