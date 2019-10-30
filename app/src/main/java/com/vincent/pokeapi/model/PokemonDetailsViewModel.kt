@@ -1,5 +1,6 @@
 package com.vincent.pokeapi.model
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,11 +14,12 @@ import kotlinx.coroutines.launch
 class PokemonDetailsViewModel(private val pokeService: IPokeService) : ViewModel() {
     lateinit var pokemon: Pokemon
 
-    val pokemonDetails = MutableLiveData<PokemonDetails>()
+    private val _pokemonDetails = MutableLiveData<PokemonDetails>()
+    val pokemonDetails: LiveData<PokemonDetails> = _pokemonDetails
 
     fun getPokemonDetails(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            GetPokemonDetails(pokeService, name).execute()?.let { pokemonDetails.postValue(it) }
+            GetPokemonDetails(pokeService, name).execute()?.let { _pokemonDetails.postValue(it) }
         }
     }
 }
