@@ -9,6 +9,7 @@ import com.vincent.usecases.GetPokemons
 import com.vincent.usecases.service.IPokeService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PokemonListViewModel(private val pokeService: IPokeService) : ViewModel() {
 
@@ -17,8 +18,12 @@ class PokemonListViewModel(private val pokeService: IPokeService) : ViewModel() 
     val pokemons: LiveData<List<Pokemon>> = _pokemons
 
     fun getPokemons() {
-        viewModelScope.launch(Dispatchers.IO) {
-            GetPokemons(pokeService).execute()?.let { _pokemons.postValue(it) }
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                GetPokemons(pokeService).execute()
+            }?.let {
+                _pokemons.value = it
+            }
         }
     }
 }
