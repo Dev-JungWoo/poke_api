@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
-import com.vincent.entities.Pokemon
 import com.vincent.entities.PokemonDetails
 import com.vincent.pokeapi.R
 import com.vincent.pokeapi.model.PokemonDetailsViewModel
@@ -37,8 +36,14 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
     @Inject
     lateinit var pokeApiService: PokeApiService
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        pokemonDetailsViewModel = ViewModelProviders.of(activity!!, PokemonDetailsViewModelFactory(pokeApiService)).get(PokemonDetailsViewModel::class.java)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        pokemonDetailsViewModel =
+            ViewModelProviders.of(activity!!, PokemonDetailsViewModelFactory(pokeApiService))
+                .get(PokemonDetailsViewModel::class.java)
 
         return inflater.inflate(R.layout.fragment_pokemon_details, container, false)!!
     }
@@ -46,23 +51,10 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
     override fun onStart() {
         super.onStart()
 
-        updateUI(pokemonDetailsViewModel.pokemon)
-
-        pokemonDetailsViewModel.pokemonDetails.observe(this, Observer {
-            updateUI(it)
-        })
-
-        pokemonImageView.visibility = View.INVISIBLE
-
-        pokemonDetailsViewModel.getPokemonDetails(pokemonDetailsViewModel.pokemon.name)
-    }
-
-    private fun updateUI(pokemon: Pokemon?) {
-        Log.d(TAG, "updateUI, pokemon = $pokemon")
-
-        pokemon?.let {
-            pokemonNameTextView.text = pokemon.name
-        }
+        pokemonDetailsViewModel.getPokemonDetails(pokemonDetailsViewModel.pokemon.name).observe(
+            this,
+            Observer { updateUI(it) }
+        )
     }
 
     private fun updateUI(details: PokemonDetails?) {
@@ -76,7 +68,6 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
                 val imageLoadJob = GlobalScope.async { loadImage(details.imageUrl) }
                 imageLoadJob.await()?.let {
                     pokemonImageView.setImageBitmap(it)
-                    pokemonImageView.visibility = View.VISIBLE
                 }
             }
         }

@@ -7,6 +7,7 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,7 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
     private val TAG = javaClass.simpleName
 
     private lateinit var pokemonListViewModel: PokemonListViewModel
+    private lateinit var pokemonList: LiveData<List<Pokemon>>
 
     @Inject
     lateinit var pokeApiService: PokeApiService
@@ -48,15 +50,8 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
         pokemonListRecyclerView.layoutManager = LinearLayoutManager(activity)
         pokemonListRecyclerView.adapter = PokemonListAdapter(this)
 
-        updateUI(pokemonListViewModel.pokemons.value)
-        pokemonListViewModel.pokemons.observe(this, Observer {
-            updateUI(it)
-        })
-
-        val pokemonList = pokemonListViewModel.pokemons.value
-        if (pokemonList == null || pokemonList.isEmpty()) {
-            pokemonListViewModel.getPokemons()
-        }
+        pokemonList = pokemonListViewModel.getPokemons()
+        pokemonList.observe(this, Observer { updateUI(it) })
     }
 
     override fun onAttach(context: Context) {
@@ -114,9 +109,9 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
                 existingPokemonList.clear()
 
                 val listToAdd: List<Pokemon>? = if (newText.isEmpty()) {
-                    pokemonListViewModel.pokemons.value
+                    pokemonList.value
                 } else {
-                    pokemonListViewModel.pokemons.value?.filter {
+                    pokemonList.value?.filter {
                         it.name.contains(newText, true)
                     }
                 }
