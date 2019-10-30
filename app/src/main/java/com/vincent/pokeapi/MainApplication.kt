@@ -2,7 +2,6 @@ package com.vincent.pokeapi
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import com.vincent.pokeapi.di.DaggerAppComponent
 import com.vincent.pokeapi.services.RetrofitPokeService
 import com.vincent.pokeapi.services.ServiceModule
@@ -14,10 +13,6 @@ import javax.inject.Inject
 
 class MainApplication : Application(), HasAndroidInjector {
     val TAG = javaClass.simpleName
-
-    init {
-        Log.d(TAG, "MainApplication initialized")
-    }
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
