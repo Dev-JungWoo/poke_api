@@ -1,15 +1,15 @@
 package com.vincent.pokeapi.view.pokemons
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.vincent.entities.Pokemon
 import com.vincent.pokeapi.R
 import com.vincent.pokeapi.model.PokemonDetailsViewModel
@@ -21,10 +21,7 @@ import com.vincent.pokeapi.view.pokemons.details.IPokemonListSelectListener
 import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsFragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemons.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListener {
     private val TAG = javaClass.simpleName
@@ -62,7 +59,7 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

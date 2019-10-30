@@ -1,7 +1,7 @@
 package com.vincent.pokeapi.model
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.vincent.usecases.service.IPokeService
 
 @Suppress("UNCHECKED_CAST")

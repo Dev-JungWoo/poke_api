@@ -1,6 +1,5 @@
 package com.vincent.pokeapi
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.util.Log
@@ -9,10 +8,11 @@ import com.vincent.pokeapi.services.RetrofitPokeService
 import com.vincent.pokeapi.services.ServiceModule
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class MainApplication : Application() , HasActivityInjector {
+
+class MainApplication : Application(), HasAndroidInjector {
     val TAG = javaClass.simpleName
 
     init {
@@ -20,9 +20,9 @@ class MainApplication : Application() , HasActivityInjector {
     }
 
     @Inject
-    lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
-    override fun activityInjector(): AndroidInjector<Activity> = dispatchingActivityInjector
+    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
     override fun onCreate() {
         super.onCreate()

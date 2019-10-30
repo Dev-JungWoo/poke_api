@@ -1,6 +1,6 @@
 package com.vincent.pokeapi.model
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.vincent.entities.PokemonDetails
 import com.vincent.pokeapi.BaseUnitTest
 import com.vincent.pokeapi.data.PokeDataSource

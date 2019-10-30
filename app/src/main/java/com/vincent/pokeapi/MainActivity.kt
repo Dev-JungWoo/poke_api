@@ -1,24 +1,15 @@
 package com.vincent.pokeapi
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import com.vincent.pokeapi.view.pokemons.PokemonListFragment
 import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+class MainActivity : DaggerAppCompatActivity() {
     private val TAG = javaClass.simpleName
-
-    @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -29,6 +20,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
             val pokemonListFragment = PokemonListFragment()
+
             transaction.add(R.id.main_container, pokemonListFragment)
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             transaction.commit()

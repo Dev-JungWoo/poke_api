@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class PokemonDetailsViewModel(private val pokeService: IPokeService) : ViewModel(), CoroutineScope {
     lateinit var pokemon: Pokemon
-    val pokemonDetails = MutableLiveData<PokemonDetails?>()
+
+    val pokemonDetails = MutableLiveData<PokemonDetails>()
 
     private val job = Job()
     override val coroutineContext = Dispatchers.Default + job

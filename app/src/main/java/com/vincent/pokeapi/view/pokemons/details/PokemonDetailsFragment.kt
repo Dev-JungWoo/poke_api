@@ -1,16 +1,17 @@
 package com.vincent.pokeapi.view.pokemons.details
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import com.vincent.entities.Pokemon
 import com.vincent.entities.PokemonDetails
 import com.vincent.pokeapi.R
@@ -19,15 +20,15 @@ import com.vincent.pokeapi.model.PokemonDetailsViewModelFactory
 import com.vincent.pokeapi.services.PokeApiService
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemon_details.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.io.InputStream
 import java.net.URL
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 
-class PokemonDetailsFragment : Fragment(), IPokemonDetailsView, CoroutineScope {
-    override val coroutineContext: CoroutineContext = Dispatchers.Main + SupervisorJob()
+class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
 
     private val TAG = javaClass.simpleName
 
@@ -71,7 +72,7 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView, CoroutineScope {
             weightTextView.text = details.weight.toString()
             heightTextView.text = details.height.toString()
 
-            this.launch() {
+            lifecycleScope.launch {
                 val imageLoadJob = GlobalScope.async { loadImage(details.imageUrl) }
                 imageLoadJob.await()?.let {
                     pokemonImageView.setImageBitmap(it)
@@ -81,7 +82,7 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView, CoroutineScope {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

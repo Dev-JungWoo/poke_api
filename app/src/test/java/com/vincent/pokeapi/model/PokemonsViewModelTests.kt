@@ -1,6 +1,6 @@
 package com.vincent.pokeapi.model
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.vincent.entities.Pokemon
 import com.vincent.pokeapi.BaseUnitTest
 import com.vincent.pokeapi.data.PokeDataSource
@@ -46,7 +46,7 @@ class PokemonsViewModelTests : BaseUnitTest() {
     }
 
     @Test
-    fun viewModel_shouldReturnNonEmptyPokemonList() = {
+    fun viewModel_shouldReturnNonEmptyPokemonList() = run {
         var resultList: List<Pokemon>? = null
         val pokeApiService = PokeApiService(pokeDataSource)
 
