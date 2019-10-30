@@ -16,6 +16,6 @@ interface RetrofitPokeService {
     ): Call<PokemonDetailsModel>?
 
     companion object {
-        val BASE_URL = "https://pokeapi.co"
+        const val BASE_URL = "https://pokeapi.co"
     }
 }

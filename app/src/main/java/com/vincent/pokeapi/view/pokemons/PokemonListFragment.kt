@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vincent.entities.Pokemon
 import com.vincent.pokeapi.R
@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_pokemons.*
 import javax.inject.Inject
 
 class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListener {
-    private val TAG = javaClass.simpleName
 
     private lateinit var pokemonListViewModel: PokemonListViewModel
     private lateinit var pokemonList: LiveData<List<Pokemon>>
@@ -34,7 +33,7 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
     lateinit var pokeApiService: PokeApiService
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        pokemonListViewModel = ViewModelProviders.of(
+        pokemonListViewModel = ViewModelProvider(
             activity!!,
             PokemonListViewModelFactory(pokeApiService)).get(PokemonListViewModel::class.java
         )
@@ -51,7 +50,7 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
         pokemonListRecyclerView.adapter = PokemonListAdapter(this)
 
         pokemonList = pokemonListViewModel.getPokemons()
-        pokemonList.observe(this, Observer { updateUI(it) })
+        pokemonList.observe(  this, Observer { updateUI(it) })
     }
 
     override fun onAttach(context: Context) {
@@ -64,7 +63,9 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
             val pokemonDetailsFragment = PokemonDetailsFragment()
 
             activity?.run {
-                ViewModelProviders.of(activity!!, PokemonDetailsViewModelFactory(pokeApiService)).get(PokemonDetailsViewModel::class.java).pokemon = pokemon
+                ViewModelProvider(
+                    activity!!,
+                    PokemonDetailsViewModelFactory(pokeApiService)).get(PokemonDetailsViewModel::class.java).pokemon = pokemon
             } ?: throw Exception("Invalid Activity")
 
             transaction.replace(R.id.main_container, pokemonDetailsFragment)
@@ -124,5 +125,9 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
                 return false
             }
         })
+    }
+
+    companion object {
+        val TAG: String = PokemonListFragment::class.java.simpleName
     }
 }

@@ -12,7 +12,6 @@ import javax.inject.Inject
 
 
 class MainApplication : Application(), HasAndroidInjector {
-    val TAG = javaClass.simpleName
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>

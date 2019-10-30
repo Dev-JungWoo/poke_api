@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.vincent.entities.PokemonDetails
 import com.vincent.pokeapi.R
@@ -29,8 +29,6 @@ import javax.inject.Inject
 
 class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
 
-    private val TAG = javaClass.simpleName
-
     private lateinit var pokemonDetailsViewModel: PokemonDetailsViewModel
 
     @Inject
@@ -42,7 +40,7 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
         savedInstanceState: Bundle?
     ): View {
         pokemonDetailsViewModel =
-            ViewModelProviders.of(activity!!, PokemonDetailsViewModelFactory(pokeApiService))
+            ViewModelProvider(activity!!, PokemonDetailsViewModelFactory(pokeApiService))
                 .get(PokemonDetailsViewModel::class.java)
 
         return inflater.inflate(R.layout.fragment_pokemon_details, container, false)!!
@@ -89,5 +87,9 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
         }
 
         return bitmap
+    }
+
+    companion object {
+        val TAG: String = PokemonDetailsFragment::class.java.simpleName
     }
 }
