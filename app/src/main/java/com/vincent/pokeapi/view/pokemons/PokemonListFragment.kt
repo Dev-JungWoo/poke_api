@@ -50,7 +50,7 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
         pokemonListRecyclerView.adapter = PokemonListAdapter(this)
 
         pokemonList = pokemonListViewModel.getPokemons()
-        pokemonList.observe(  this, Observer { updateUI(it) })
+        pokemonList.observe(  this, Observer(::updateUI))
     }
 
     override fun onAttach(context: Context) {
