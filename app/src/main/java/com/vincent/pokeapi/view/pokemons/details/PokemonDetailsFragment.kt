@@ -13,9 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.vincent.entities.PokemonDetails
-import com.vincent.pokeapi.R
-import com.vincent.pokeapi.model.PokemonDetailsViewModel
-import com.vincent.pokeapi.model.PokemonDetailsViewModelFactory
+import com.vincent.pokeapi.databinding.FragmentPokemonDetailsBinding
 import com.vincent.pokeapi.services.PokeApiService
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemon_details.*
@@ -40,10 +38,17 @@ class PokemonDetailsFragment : Fragment(), IPokemonDetailsView {
         savedInstanceState: Bundle?
     ): View {
         pokemonDetailsViewModel =
-            ViewModelProvider(activity!!, PokemonDetailsViewModelFactory(pokeApiService))
-                .get(PokemonDetailsViewModel::class.java)
+            ViewModelProvider(activity!!, PokemonDetailsViewModelFactory(pokeApiService)).get(
+                PokemonDetailsViewModel::class.java
+            )
 
-        return inflater.inflate(R.layout.fragment_pokemon_details, container, false)!!
+        val binding = FragmentPokemonDetailsBinding.inflate(
+            LayoutInflater.from(context)
+        )
+
+        binding.viewModel = pokemonDetailsViewModel
+
+        return binding.root
     }
 
     override fun onStart() {

@@ -1,4 +1,4 @@
-package com.vincent.pokeapi.view.pokemons
+package com.vincent.pokeapi.view.pokemons.list
 
 import android.util.Log
 import android.view.LayoutInflater

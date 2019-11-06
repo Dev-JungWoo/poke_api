@@ -5,6 +5,11 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
+
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.vincent.pokeapi"
         minSdkVersion 19

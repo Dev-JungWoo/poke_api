@@ -2,7 +2,7 @@ package com.vincent.pokeapi
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentTransaction
-import com.vincent.pokeapi.view.pokemons.PokemonListFragment
+import com.vincent.pokeapi.view.pokemons.list.PokemonListFragment
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*

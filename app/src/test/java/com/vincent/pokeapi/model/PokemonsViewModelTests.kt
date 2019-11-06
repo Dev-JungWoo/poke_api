@@ -5,6 +5,7 @@ import com.vincent.entities.Pokemon
 import com.vincent.pokeapi.BaseUnitTest
 import com.vincent.pokeapi.data.PokeDataSource
 import com.vincent.pokeapi.services.PokeApiService
+import com.vincent.pokeapi.view.pokemons.list.PokemonListViewModel
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -52,7 +53,7 @@ class PokemonsViewModelTests : BaseUnitTest() {
 
         given(pokeDataSource.getPokemons()).will { MOCK_POKEMONS }
 
-        val viewModel =  PokemonListViewModel(pokeApiService)
+        val viewModel = PokemonListViewModel(pokeApiService)
 
         viewModel.pokemons.observeForever { resultList = it }
         viewModel.getPokemons()

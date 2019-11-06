@@ -17,3 +17,10 @@ This is a pokemon api app which shows how to make an app based on Clean Architec
 - How to unit test the coroutines and suspend function.
 - How to unit test ViewModel, LiveData.
 
+# Todos
+- Introduce repository
+- Cache data using Room
+- Databinding
+- Flow
+- Retfrofit suspend
+

@@ -1,4 +1,4 @@
-package com.vincent.pokeapi.view.pokemons
+package com.vincent.pokeapi.view.pokemons.list
 
 import android.content.Context
 import android.os.Bundle
@@ -13,18 +13,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vincent.entities.Pokemon
 import com.vincent.pokeapi.R
-import com.vincent.pokeapi.model.PokemonDetailsViewModel
-import com.vincent.pokeapi.model.PokemonDetailsViewModelFactory
-import com.vincent.pokeapi.model.PokemonListViewModel
-import com.vincent.pokeapi.model.PokemonListViewModelFactory
 import com.vincent.pokeapi.services.PokeApiService
 import com.vincent.pokeapi.view.pokemons.details.IPokemonListSelectListener
 import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsFragment
+import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsViewModel
+import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemons.*
 import javax.inject.Inject
 
-class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListener {
+class PokemonListFragment : Fragment(), IPokemonListView, IPokemonListSelectListener {
 
     private lateinit var pokemonListViewModel: PokemonListViewModel
     private lateinit var pokemonList: LiveData<List<Pokemon>>
@@ -35,7 +33,9 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         pokemonListViewModel = ViewModelProvider(
             activity!!,
-            PokemonListViewModelFactory(pokeApiService)).get(PokemonListViewModel::class.java
+            PokemonListViewModelFactory(pokeApiService)
+        ).get(
+            PokemonListViewModel::class.java
         )
 
         setHasOptionsMenu(true)
@@ -47,7 +47,8 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
         super.onStart()
 
         pokemonListRecyclerView.layoutManager = LinearLayoutManager(activity)
-        pokemonListRecyclerView.adapter = PokemonListAdapter(this)
+        pokemonListRecyclerView.adapter =
+            PokemonListAdapter(this)
 
         pokemonList = pokemonListViewModel.getPokemons()
         pokemonList.observe(  this, Observer(::updateUI))
@@ -65,7 +66,10 @@ class PokemonListFragment : Fragment(), IPokemonsView, IPokemonListSelectListene
             activity?.run {
                 ViewModelProvider(
                     activity!!,
-                    PokemonDetailsViewModelFactory(pokeApiService)).get(PokemonDetailsViewModel::class.java).pokemon = pokemon
+                    PokemonDetailsViewModelFactory(
+                        pokeApiService
+                    )
+                ).get(PokemonDetailsViewModel::class.java).pokemon = pokemon
             } ?: throw Exception("Invalid Activity")
 
             transaction.replace(R.id.main_container, pokemonDetailsFragment)

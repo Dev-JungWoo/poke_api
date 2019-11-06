@@ -1,4 +1,4 @@
-package com.vincent.pokeapi.model
+package com.vincent.pokeapi.view.pokemons.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
