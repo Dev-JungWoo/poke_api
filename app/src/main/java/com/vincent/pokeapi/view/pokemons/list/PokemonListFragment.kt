@@ -8,7 +8,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vincent.entities.Pokemon
@@ -18,6 +17,7 @@ import com.vincent.pokeapi.view.pokemons.details.IPokemonListSelectListener
 import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsFragment
 import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsViewModel
 import com.vincent.pokeapi.view.pokemons.details.PokemonDetailsViewModelFactory
+import com.vincent.usecases.GetPokemonsState
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_pokemons.*
 import javax.inject.Inject
@@ -47,11 +47,14 @@ class PokemonListFragment : Fragment(), IPokemonListView, IPokemonListSelectList
         super.onStart()
 
         pokemonListRecyclerView.layoutManager = LinearLayoutManager(activity)
-        pokemonListRecyclerView.adapter =
-            PokemonListAdapter(this)
+        pokemonListRecyclerView.adapter = PokemonListAdapter(this)
 
-        pokemonList = pokemonListViewModel.getPokemons()
-        pokemonList.observe(  this, Observer(::updateUI))
+        when (pokemonListViewModel.getPokemons().value) {
+            GetPokemonsState.Loading -> {}
+            is GetPokemonsState.Loaded -> updateUI((pokemonListViewModel.getPokemons().value as GetPokemonsState.Loaded).pokemons)
+            GetPokemonsState.Failed -> {}
+            null -> {}
+        }
     }
 
     override fun onAttach(context: Context) {
