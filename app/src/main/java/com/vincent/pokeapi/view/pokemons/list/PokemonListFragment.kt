@@ -46,15 +46,15 @@ class PokemonListFragment : Fragment(), IPokemonListView, IPokemonListSelectList
     override fun onStart() {
         super.onStart()
 
-        pokemonListRecyclerView.layoutManager = LinearLayoutManager(activity)
-        pokemonListRecyclerView.adapter = PokemonListAdapter(this)
-
-        when (pokemonListViewModel.getPokemons().value) {
-            GetPokemonsState.Loading -> {}
-            is GetPokemonsState.Loaded -> updateUI((pokemonListViewModel.getPokemons().value as GetPokemonsState.Loaded).pokemons)
-            GetPokemonsState.Failed -> {}
-            null -> {}
-        }
+//        pokemonListRecyclerView.layoutManager = LinearLayoutManager(activity)
+//        pokemonListRecyclerView.adapter = PokemonListAdapter(this)
+//
+//        when (pokemonListViewModel.getPokemons().value) {
+//            GetPokemonsState.Loading -> {}
+//            is GetPokemonsState.Loaded -> updateUI((pokemonListViewModel.getPokemons().value as GetPokemonsState.Loaded).pokemons)
+//            GetPokemonsState.Failed -> {}
+//            null -> {}
+//        }
     }
 
     override fun onAttach(context: Context) {
